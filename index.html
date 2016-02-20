@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+
+Prime number?: <input type="text" id="t2" /><input type="button" onclick="isPrime()"value="Enter"><br>
+
+
+<div id="is_prime">
+0
+</div>
+
+<script>
+function isPrime() {
+    var my_val = document.getElementById("t2").value;
+    var myUrl = "http://localhost:8088/is_prime?" + my_val;
+
+    var xmlHttp = new XMLHttpRequest();
+    
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == XMLHttpRequest.DONE) {
+            document.getElementById("is_prime").innerHTML = xmlHttp.responseText;
+        }
+    }
+   
+    xmlHttp.open("GET", myUrl, true);
+    xmlHttp.send( null );    
+}
+</script>
+
+</body>
+</html>
