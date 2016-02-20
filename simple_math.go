@@ -44,10 +44,9 @@ func is_prime(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println(r.Form)
-	var num_str string
-	for k, _ := range r.Form {
-		num_str = k
-	}
+
+	num_str := r.Form["num"][0]
+
 	log.Println(num_str)
 	num, err := strconv.Atoi(num_str)
 	if err != nil {
@@ -65,10 +64,10 @@ func main() {
 	http.HandleFunc("/simple_math", handler)
         http.HandleFunc("/is_prime", is_prime)
 
-	ip_address := "0.0.0.0:8088"
-	log.Println(ip_address)
+	socket_address := "0.0.0.0:8088"
+	log.Println(socket_address)
 	
-	error := http.ListenAndServe(ip_address, nil)
+	error := http.ListenAndServe(socket_address, nil)
 	if error != nil {
 		log.Fatalln(error)
 	}
