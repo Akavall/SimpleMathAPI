@@ -64,8 +64,7 @@ func main() {
 	http.HandleFunc("/simple_math", handler)
         http.HandleFunc("/is_prime", is_prime)
 
-	// socket_address := "0.0.0.0:8088"
-	socket_address := "localhost:8088"
+	socket_address := "0.0.0.0:8088"
 	log.Println(socket_address)
 	
 	error := http.ListenAndServe(socket_address, nil)

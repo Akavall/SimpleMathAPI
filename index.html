@@ -16,9 +16,8 @@ Prime number?: <input type="text" id="t2" /><input type="button" onclick="isPrim
 <script>
 function isPrime() {
     var my_val = document.getElementById("t2").value;
-    // var myUrl = "http://52.33.0.109:8088/is_prime?num" + my_val;
-    var myUrl = "http://localhost:8088/is_prime?num=" + my_val;
-
+    var myUrl = "http://52.33.0.109:8088/is_prime?num" + my_val;
+    
     var xmlHttp = new XMLHttpRequest();
     
     xmlHttp.onreadystatechange = function() { 
