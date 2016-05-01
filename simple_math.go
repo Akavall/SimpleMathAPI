@@ -46,7 +46,7 @@ func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	fmt.Println("Hi")
+	fmt.Println("Hello")
 
 	// We need need to create a file manually
 	// and change the permissions with: 
