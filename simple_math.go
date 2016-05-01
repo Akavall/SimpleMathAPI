@@ -6,6 +6,7 @@ import (
 	"log"
 	"fmt"
 	"strconv"
+	"os"
 
 	"github.com/Akavall/SimpleMathAPI/utilities"
 )
@@ -29,11 +30,9 @@ func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	log.Println(r.Form)
-
 	num_str := r.Form["num"][0]
 
-	log.Println(num_str)
+	log.Printf("Receiving: %s num_str\n", num_str)
 	num, err := strconv.Atoi(num_str)
 	if err != nil {
 		fmt.Fprint(w, "Please provide a valid integer string")
@@ -46,6 +45,17 @@ func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 
 
 func main() {
+
+	// We need need to create a file manually
+	// and change the permissions with: 
+	// sudo chmod 666 logfile.txt
+	f, err := os.OpenFile("/var/log/SimpleMathAPI/logfile.txt", os.O_RDWR|os.O_APPEND, 0660)
+
+	if err != nil {
+		fmt.Println("Could not open logfile.txt")
+	}
+
+	log.SetOutput(f)
 
 	http.HandleFunc("/simple_math", handler)
         http.HandleFunc("/is_prime", is_prime_wrapper)
