@@ -11,8 +11,7 @@ func TestIsPrime(t *testing.T) {
 		primes_map[ele] = true
 	}
 
-	// 54
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 54; i++ {
 		is_prime := IsPrime(i)
 		_, in_map := primes_map[i]
 		if is_prime != in_map {
