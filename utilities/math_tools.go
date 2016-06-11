@@ -4,6 +4,9 @@ import (
 	"math"
 )
 
+// Chech whether the integer is prime
+// returns true if integer is prime
+// returns false if integer is not prime 
 func IsPrime(x int) bool {
 	if x < 2 { return false }
 	if x == 2 { return true }
