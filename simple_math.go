@@ -46,9 +46,6 @@ func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	// Let's break it!
-	temp := "a" + 5
-
 	// We need need to create a file manually
 	// and change the permissions with: 
 	// sudo chmod 666 logfile.txt
