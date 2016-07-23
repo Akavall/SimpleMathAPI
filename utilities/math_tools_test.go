@@ -12,7 +12,7 @@ func TestIsPrime(t *testing.T) {
 	}
 
 	for i := 0; i < 54; i++ {
-		is_prime := IsPrime(i + 2)
+		is_prime := IsPrime(i)
 		_, in_map := primes_map[i]
 		if is_prime != in_map {
 			t.Errorf("%d, is_prime: %t, prime_map: %t", i, is_prime, in_map)
