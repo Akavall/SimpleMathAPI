@@ -37,9 +37,20 @@ func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Fprint(w, "Please provide a valid integer string")
 	} else {
-		result := math_tools.IsPrime(num)
-		log.Printf("Writing result: %t\n", result)
-		fmt.Fprint(w, strconv.FormatBool(result))
+		div, result := math_tools.IsPrime(num)
+		log.Printf("Writing result: %d, %t\n", div, result)
+		var w_string string
+		if result {
+			w_string = fmt.Sprintf("%d is prime\n", num)
+		} else if num < 0 {
+			w_string = fmt.Sprintf("%d is not prime, negative numbers cannot be prime\n", num) 
+		} else if num == 0 || num == 1 {
+			w_string = fmt.Sprintf("%d is not prime by convention\n", num)
+		} else {
+			w_string = fmt.Sprintf("%d is not prime, smallest divisor: %d\n", num, div)
+		}
+
+		fmt.Fprint(w, w_string)
 	}
 }
 

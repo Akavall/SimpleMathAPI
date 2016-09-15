@@ -11,11 +11,17 @@ func TestIsPrime(t *testing.T) {
 		primes_map[ele] = true
 	}
 
-	for i := 0; i < 54; i++ {
-		is_prime := IsPrime(i)
+	for i := 2; i < 54; i++ {
+		div, is_prime := IsPrime(i)
 		_, in_map := primes_map[i]
 		if is_prime != in_map {
 			t.Errorf("%d, is_prime: %t, prime_map: %t", i, is_prime, in_map)
+			t.Errorf("%d, has a non-zero divisor for prime number: %d", i, div)
+		} 
+		if is_prime == false {
+			if (i / div) * div != i {
+				t.Errorf("%d gets div: %d, which does not divide number evenly", i, div)
+			}
 		}
 	}
 }
