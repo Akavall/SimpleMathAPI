@@ -9,8 +9,8 @@ func ExampleIsPrime() {
 	fmt.Println(IsPrime(19))
 	fmt.Println(IsPrime(1))
 	// Output:
-	// false
-	// true
-	// false
+	// 2 false
+	// 0 true
+	// 0 false
 
 }
