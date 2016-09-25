@@ -35,7 +35,19 @@ func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Receiving: %s num_str\n", num_str)
 	num, err := strconv.Atoi(num_str)
 	if err != nil {
-		fmt.Fprint(w, "Please provide a valid integer string")
+		error_type, ok := err.(*strconv.NumError)
+
+		if !ok {
+			log.Printf("Failed to convert error to NumError")
+		}
+
+		if error_type.Err == strconv.ErrSyntax {
+			fmt.Fprint(w, "Please provide a valid integer string")
+		} else if error_type.Err == strconv.ErrRange {
+			fmt.Fprint(w, "Please provide a smaller number")
+		} else {
+			fmt.Fprint(w, "Hmm..strange error, you discoverd something we did not cover")
+		}
 	} else {
 		div, result := math_tools.IsPrime(num)
 		log.Printf("Writing result: %d, %t\n", div, result)
