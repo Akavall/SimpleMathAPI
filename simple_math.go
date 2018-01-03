@@ -1,12 +1,12 @@
 package main
 
 import (
-	"net/http"
-	"text/template"
-	"log"
 	"fmt"
-	"strconv"
+	"log"
+	"net/http"
 	"os"
+	"strconv"
+	"text/template"
 
 	"./utilities"
 )
@@ -23,11 +23,17 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
 		panic(err)
+	}
+
+	_, ok := r.Form["num"]
+	if ok == false {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("400 - request does not specify: num"))
+		return
 	}
 
 	num_str := r.Form["num"][0]
@@ -42,20 +48,29 @@ func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if error_type.Err == strconv.ErrSyntax {
-			fmt.Fprint(w, "Please provide a valid integer string")
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("400 - input is not valid integer"))
 		} else if error_type.Err == strconv.ErrRange {
-			fmt.Fprint(w, "Please provide a smaller number")
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("400 - input integer is too large"))
 		} else {
 			fmt.Fprint(w, "Hmm..strange error, you discoverd something we did not cover")
 		}
 	} else {
-		div, result := math_tools.IsPrime(num)
+		div, result, err := math_tools.IsPrime(num)
+
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(fmt.Sprintf("500 = %s", err)))
+			return
+		}
+
 		log.Printf("Writing result: %d, %t\n", div, result)
 		var w_string string
 		if result {
 			w_string = fmt.Sprintf("%d is prime\n", num)
 		} else if num < 0 {
-			w_string = fmt.Sprintf("%d is not prime, negative numbers cannot be prime\n", num) 
+			w_string = fmt.Sprintf("%d is not prime, negative numbers cannot be prime\n", num)
 		} else if num == 0 || num == 1 {
 			w_string = fmt.Sprintf("%d is not prime by convention\n", num)
 		} else {
@@ -66,11 +81,10 @@ func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 func main() {
 
 	// We need need to create a file manually
-	// and change the permissions with: 
+	// and change the permissions with:
 	// sudo chmod 666 logfile.txt
 	f, err := os.OpenFile("/var/log/SimpleMathAPI/logfile.txt", os.O_RDWR|os.O_APPEND, 0660)
 
@@ -81,11 +95,11 @@ func main() {
 	log.SetOutput(f)
 
 	http.HandleFunc("/simple_math", handler)
-        http.HandleFunc("/is_prime", is_prime_wrapper)
+	http.HandleFunc("/is_prime", is_prime_wrapper)
 
 	socket_address := "0.0.0.0:8088"
 	log.Println(socket_address)
-	
+
 	error := http.ListenAndServe(socket_address, nil)
 	if error != nil {
 		log.Fatalln(error)
