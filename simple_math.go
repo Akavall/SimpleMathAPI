@@ -48,9 +48,11 @@ func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if error_type.Err == strconv.ErrSyntax {
-			fmt.Fprint(w, "Please provide a valid integer string")
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("400 - input is not valid integer"))
 		} else if error_type.Err == strconv.ErrRange {
-			fmt.Fprint(w, "Please provide a smaller number")
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("400 - input integer is too large"))
 		} else {
 			fmt.Fprint(w, "Hmm..strange error, you discoverd something we did not cover")
 		}
