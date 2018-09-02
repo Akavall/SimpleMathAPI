@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"text/template"
 
-	"./utilities"
+	"github.com/Akavall/SimpleMathAPI/utilities"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
