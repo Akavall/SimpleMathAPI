@@ -1,12 +1,12 @@
 package main
 
 import (
-	"net/http"
-	"text/template"
-	"log"
 	"fmt"
-	"strconv"
+	"log"
+	"net/http"
 	"os"
+	"strconv"
+	"text/template"
 
 	"./utilities"
 )
@@ -22,7 +22,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err)
 	}
 }
-
 
 func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
@@ -43,11 +42,13 @@ func is_prime_wrapper(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 func main() {
 
+	fmt.Println("Random like for Jenkins")
+	fmt.Println("Added another random line")
+
 	// We need need to create a file manually
-	// and change the permissions with: 
+	// and change the permissions with:
 	// sudo chmod 666 logfile.txt
 	f, err := os.OpenFile("/var/log/SimpleMathAPI/logfile.txt", os.O_RDWR|os.O_APPEND, 0660)
 
@@ -58,11 +59,11 @@ func main() {
 	log.SetOutput(f)
 
 	http.HandleFunc("/simple_math", handler)
-        http.HandleFunc("/is_prime", is_prime_wrapper)
+	http.HandleFunc("/is_prime", is_prime_wrapper)
 
 	socket_address := "0.0.0.0:8088"
 	log.Println(socket_address)
-	
+
 	error := http.ListenAndServe(socket_address, nil)
 	if error != nil {
 		log.Fatalln(error)
